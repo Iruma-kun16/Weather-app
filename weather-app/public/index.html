@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SKIES — Weather</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Video background with slide transition -->
+  <div class="vid-container" id="vidContainer">
+    <video class="vid-bg vid-active" id="vidA" autoplay muted loop playsinline>
+      <source src="night.mp4" type="video/mp4"/>
+    </video>
+    <video class="vid-bg vid-next" id="vidB" muted loop playsinline>
+      <source src="day.mp4" type="video/mp4"/>
+    </video>
+  </div>
+  <div class="gif-overlay"></div>
+  <div class="noise"></div>
+
+  <div class="app">
+
+    <header>
+      <div class="logo-wrap">
+        <div class="logo">SKIES</div>
+        <div class="tagline">Real-time weather</div>
+      </div>
+
+      <!-- Controls: favorites, unit toggle, theme toggle -->
+      <div class="controls">
+
+        <!-- Favorites dropdown -->
+        <div class="fav-wrap">
+          <button class="ctrl-btn" id="favBtn" title="Saved cities">★ Favorites</button>
+          <div class="fav-dropdown" id="favDropdown"></div>
+        </div>
+
+        <!-- °C / °F toggle -->
+        <button class="ctrl-btn unit-toggle" id="unitToggle">°C</button>
+
+        <!-- Dark / Light mode -->
+        <button class="ctrl-btn theme-toggle" id="themeToggle">☀️</button>
+
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search city..." autocomplete="off"/>
+        <div class="suggestions" id="suggestions"></div>
+      </div>
+    </header>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p class="loading-text">FETCHING WEATHER DATA...</p>
+    </div>
+
+    <div class="error-msg" id="errorMsg">
+      <div class="error-icon">⚠️</div>
+      <p id="errorText">Something went wrong.</p>
+    </div>
+
+    <div id="weatherDisplay">
+      <div class="hero-card">
+        <div class="hero-left">
+          <div class="hero-city" id="cityName">—</div>
+          <div class="hero-time" id="localTime">—</div>
+          <div class="hero-desc" id="weatherDesc">—</div>
+          <div class="hero-meta">
+            <span><strong id="windSpeed">—</strong> Wind km/h</span>
+            <span><strong id="humidity">—</strong> Humidity %</span>
+            <span><strong id="precipProb">—</strong> Rain %</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <button class="save-btn" id="saveBtn" title="Save city">☆</button>
+          <div class="weather-icon" id="heroIcon">🌤</div>
+          <div class="hero-temp" id="heroTemp">—</div>
+          <div class="feels-like" id="feelsLike">—</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card card-full">
+          <div class="card-label">24-Hour Forecast</div>
+          <div class="hourly-scroll" id="hourlyScroll"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">7-Day Forecast</div>
+          <div id="dailyForecast"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Conditions</div>
+          <div class="stat-grid" id="statsGrid"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Sun</div>
+          <div class="sun-row" id="sunRow"></div>
+        </div>
+      </div>
+
+      <!-- AI Assistant Panel -->
+      <div class="ai-panel">
+        <div class="ai-header">
+          <div class="ai-title">
+            <span class="ai-dot"></span>
+            Ask Skies AI
+          </div>
+          <div class="ai-subtitle">Powered by Groq · Ask about what to wear, umbrella, activities...</div>
+        </div>
+        <div class="ai-messages" id="aiMessages">
+          <div class="ai-bubble ai-bubble--bot">
+            👋 Hi! I can see the current weather. Ask me anything — what to wear, whether to bring an umbrella, or if it's a good day for outdoor activities!
+          </div>
+        </div>
+        <div class="ai-chips">
+          <button class="ai-chip" onclick="askQuick('What should I wear today?')">👕 What to wear?</button>
+          <button class="ai-chip" onclick="askQuick('Should I bring an umbrella?')">☂️ Umbrella?</button>
+          <button class="ai-chip" onclick="askQuick('Is it a good day to go outside?')">🌿 Go outside?</button>
+          <button class="ai-chip" onclick="askQuick('How does it feel outside right now?')">🌡 How does it feel?</button>
+        </div>
+        <div class="ai-input-row">
+          <input class="ai-input" id="aiInput" type="text" placeholder="Ask about the weather..." />
+          <button class="ai-send" id="aiSend" onclick="sendQuestion()">Send</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="empty" id="emptyState">
+      <div class="empty-icon">🌍</div>
+      <h2>SEARCH A CITY</h2>
+      <p>Type any city name above to get real-time weather</p>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
